@@ -1,0 +1,602 @@
+{
+  "info": {
+    "name": "ShopFlow API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Collection complète des endpoints ShopFlow — Dr. Ing. Ghada Feki 2025/2026"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8080" },
+    { "key": "access_token", "value": "" },
+    { "key": "refresh_token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register (CUSTOMER)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nouveau@test.com\",\n  \"motDePasse\": \"Password123!\",\n  \"prenom\": \"Jean\",\n  \"nom\": \"Dupont\",\n  \"role\": \"CUSTOMER\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Register (SELLER)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"vendeur@test.com\",\n  \"motDePasse\": \"Password123!\",\n  \"prenom\": \"Alice\",\n  \"nom\": \"Martin\",\n  \"role\": \"SELLER\",\n  \"nomBoutique\": \"Boutique Alice\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login (ADMIN)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "pm.collectionVariables.set('access_token', json.accessToken);",
+                  "pm.collectionVariables.set('refresh_token', json.refreshToken);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@shopflow.com\",\n  \"motDePasse\": \"password123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login (SELLER)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "pm.collectionVariables.set('access_token', json.accessToken);",
+                  "pm.collectionVariables.set('refresh_token', json.refreshToken);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"seller@shopflow.com\",\n  \"motDePasse\": \"password123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login (CUSTOMER)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "pm.collectionVariables.set('access_token', json.accessToken);",
+                  "pm.collectionVariables.set('refresh_token', json.refreshToken);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"client@shopflow.com\",\n  \"motDePasse\": \"password123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/auth/refresh",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refresh_token}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/auth/logout"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Produits",
+      "item": [
+        {
+          "name": "Liste produits (paginée + filtres)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/products?page=0&size=12&sort=dateCreation,desc",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "12" },
+                { "key": "sort", "value": "dateCreation,desc" },
+                { "key": "categorie", "value": "", "disabled": true },
+                { "key": "prixMin", "value": "", "disabled": true },
+                { "key": "prixMax", "value": "", "disabled": true },
+                { "key": "promo", "value": "true", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Détail produit",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/products/1"
+          }
+        },
+        {
+          "name": "Recherche full-text",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/products/search?q=shirt",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products", "search"],
+              "query": [{ "key": "q", "value": "shirt" }]
+            }
+          }
+        },
+        {
+          "name": "Top 10 meilleures ventes",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/products/top-selling"
+          }
+        },
+        {
+          "name": "Créer un produit (SELLER)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/products",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"T-Shirt Premium\",\n  \"description\": \"T-shirt de haute qualité\",\n  \"prix\": 29.99,\n  \"prixPromo\": 19.99,\n  \"stock\": 100,\n  \"categorieIds\": [1],\n  \"images\": [\"https://example.com/img.jpg\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "Modifier un produit (SELLER)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/products/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"T-Shirt Premium V2\",\n  \"description\": \"Nouvelle description\",\n  \"prix\": 34.99,\n  \"stock\": 80,\n  \"categorieIds\": [1]\n}"
+            }
+          }
+        },
+        {
+          "name": "Désactiver un produit (soft delete)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/products/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Catégories",
+      "item": [
+        {
+          "name": "Liste catégories",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/categories"
+          }
+        },
+        {
+          "name": "Créer une catégorie (ADMIN)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/categories",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Électronique\",\n  \"description\": \"Appareils électroniques\",\n  \"parentId\": null\n}"
+            }
+          }
+        },
+        {
+          "name": "Modifier une catégorie (ADMIN)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/categories/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Électronique & High-Tech\",\n  \"description\": \"Appareils et gadgets\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Supprimer une catégorie (ADMIN)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/categories/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Panier",
+      "item": [
+        {
+          "name": "Voir mon panier",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/cart"
+          }
+        },
+        {
+          "name": "Ajouter un article",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/cart/items",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"quantite\": 2,\n  \"variantId\": null\n}"
+            }
+          }
+        },
+        {
+          "name": "Modifier quantité d'un article",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/cart/items/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantite\": 3\n}"
+            }
+          }
+        },
+        {
+          "name": "Retirer un article",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/cart/items/1"
+          }
+        },
+        {
+          "name": "Appliquer un coupon",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/cart/coupon",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"BIENVENUE10\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Retirer le coupon",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/cart/coupon"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Commandes",
+      "item": [
+        {
+          "name": "Passer une commande",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"addressId\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "Mes commandes",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/orders/my"
+          }
+        },
+        {
+          "name": "Détail d'une commande",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/orders/1"
+          }
+        },
+        {
+          "name": "Toutes les commandes (ADMIN)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/orders"
+          }
+        },
+        {
+          "name": "Commandes reçues (SELLER)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/orders/seller"
+          }
+        },
+        {
+          "name": "Mettre à jour le statut (SELLER/ADMIN)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/orders/1/status",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"statut\": \"PAID\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Annuler une commande (CUSTOMER)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/orders/1/cancel"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Avis",
+      "item": [
+        {
+          "name": "Poster un avis",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/reviews",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"note\": 5,\n  \"commentaire\": \"Excellent produit, très satisfait !\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Avis d'un produit",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/reviews/product/1"
+          }
+        },
+        {
+          "name": "Approuver un avis (ADMIN)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/reviews/1/approve"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Coupons",
+      "item": [
+        {
+          "name": "Liste des coupons (ADMIN)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/coupons"
+          }
+        },
+        {
+          "name": "Créer un coupon (ADMIN)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/coupons",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"PROMO20\",\n  \"type\": \"PERCENT\",\n  \"valeur\": 20,\n  \"usagesMax\": 50,\n  \"dateExpiration\": \"2026-12-31T23:59:59\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Modifier un coupon (ADMIN)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/coupons/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"PROMO20\",\n  \"type\": \"PERCENT\",\n  \"valeur\": 25,\n  \"usagesMax\": 100,\n  \"dateExpiration\": \"2026-12-31T23:59:59\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Supprimer un coupon (ADMIN)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/coupons/1"
+          }
+        },
+        {
+          "name": "Valider un code promo",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/coupons/validate/BIENVENUE10"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Dashboard ADMIN",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/dashboard/admin"
+          }
+        },
+        {
+          "name": "Dashboard SELLER",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/dashboard/seller"
+          }
+        },
+        {
+          "name": "Dashboard CUSTOMER",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/dashboard/customer"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Administration Utilisateurs",
+      "item": [
+        {
+          "name": "Liste utilisateurs (ADMIN)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/admin/users"
+          }
+        },
+        {
+          "name": "Activer un compte (ADMIN)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/admin/users/1/activate"
+          }
+        },
+        {
+          "name": "Désactiver un compte (ADMIN)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/admin/users/1/deactivate"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Adresses",
+      "item": [
+        {
+          "name": "Mes adresses",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/addresses"
+          }
+        },
+        {
+          "name": "Ajouter une adresse",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/addresses",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rue\": \"12 rue de la Paix\",\n  \"ville\": \"Paris\",\n  \"codePostal\": \"75001\",\n  \"pays\": \"France\",\n  \"principal\": true\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
