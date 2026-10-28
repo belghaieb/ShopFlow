@@ -1,8 +1,8 @@
-# ShopFlow — Système de Gestion d'une Boutique en Ligne
+ShopFlow — Système de Gestion d'une Boutique en Ligne
 
 Marketplace B2C complète — Backend Spring Boot 3 + Frontend Next.js
 
-## 🛠️ Stack Technique
+  Stack Technique
 
 | Couche | Technologie |
 |--------|-------------|
@@ -13,7 +13,7 @@ Marketplace B2C complète — Backend Spring Boot 3 + Frontend Next.js
 | Frontend | Next.js 14, TypeScript, Tailwind CSS |
 | Auth Frontend | Cookies HttpOnly + Intercepteur Axios |
 
-## 📁 Structure du projet
+ Structure du projet
 
 ```
 shopflow/
@@ -35,13 +35,13 @@ shopflow/
         └── lib/          (api.ts avec intercepteur, types.ts)
 ```
 
-## 🚀 Lancement — Backend
+  Lancement — Backend
 
-### Prérequis
+ Prérequis
 - Java 21+
 - Maven 3.9+
 
-### Démarrage (mode dev avec H2)
+ Démarrage (mode dev avec H2)
 ```bash
 cd backend
 mvn spring-boot:run
@@ -52,7 +52,7 @@ L'API démarre sur **http://localhost:8080**
 - Swagger UI : http://localhost:8080/swagger-ui
 - H2 Console : http://localhost:8080/h2-console (url: `jdbc:h2:mem:shopflowdb`)
 
-### Passer en PostgreSQL (production)
+ Passer en PostgreSQL (production)
 Dans `application.properties`, remplacer la config H2 par :
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/shopflowdb
@@ -62,13 +62,13 @@ spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.hibernate.ddl-auto=update
 ```
 
-## 🚀 Lancement — Frontend
+ Lancement — Frontend
 
-### Prérequis
+ Prérequis
 - Node.js 18+
 - npm
 
-### Démarrage
+ Démarrage
 ```bash
 cd frontend
 npm install
@@ -77,7 +77,7 @@ npm run dev
 
 Le frontend démarre sur **http://localhost:3000**
 
-## 🔐 Comptes de démonstration
+ Comptes de démonstration
 
 | Rôle | Email | Mot de passe |
 |------|-------|-------------|
@@ -85,7 +85,7 @@ Le frontend démarre sur **http://localhost:3000**
 | Vendeur | seller@shopflow.com | password123 |
 | Client | client@shopflow.com | password123 |
 
-## 📋 Endpoints API principaux
+ Endpoints API principaux
 
 ```
 POST   /api/auth/register        — Inscription
@@ -110,7 +110,7 @@ GET    /api/dashboard/admin      — Stats admin
 GET    /api/dashboard/seller     — Stats vendeur
 ```
 
-## 🏗️ Architecture
+🏗️ Architecture
 
 ```
 Client HTTP
@@ -128,16 +128,16 @@ Repository (JpaRepository + Specifications)
 Entity (JPA) ──► PostgreSQL / H2
 ```
 
-## 📦 Données de démo
+ Données de démo
 
 Le fichier `backend/src/main/resources/data.sql` charge automatiquement :
 - 5 utilisateurs (1 admin, 2 vendeurs, 2 clients)
 - 8 produits avec images, variantes, catégories
 - 3 codes promo (BIENVENUE10, REMISE5, SUMMER20)
 
-## ✅ Fonctionnalités implémentées
+ Fonctionnalités implémentées
 
-### Backend
+ Backend
 - [x] Authentification JWT (access + refresh token)
 - [x] 3 rôles : ADMIN, SELLER, CUSTOMER
 - [x] CRUD Produits avec soft delete
@@ -154,7 +154,7 @@ Le fichier `backend/src/main/resources/data.sql` charge automatiquement :
 - [x] Swagger UI documenté
 - [x] GlobalExceptionHandler
 
-### Frontend
+ Frontend
 - [x] Page d'accueil avec promotions + nouveautés
 - [x] Catalogue avec filtres dynamiques
 - [x] Fiche produit avec variantes + avis
@@ -168,8 +168,5 @@ Le fichier `backend/src/main/resources/data.sql` charge automatiquement :
 - [x] Design responsive (mobile-first)
 - [x] Composants réutilisables (ProductCard, RatingStars, OrderStatusBadge...)
 
-## 🎓 Projet universitaire
+ 🎓 Projet universitaire
 
-- **Cours** : Dr. Ing. Ghada Feki
-- **Année** : 2025–2026
-- **Note** : Backend (15 pts) + Frontend (5 pts) = 20 pts
